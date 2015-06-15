@@ -1,3 +1,4 @@
+import simplejson
 import requests
 
 
@@ -79,7 +80,7 @@ class LendingClubAPI:
         response = requests.post(
             "https://api.lendingclub.com/api/investor/v1/accounts/%d/orders" % self.investor_id,
             headers=self.header,
-            data=json.dumps(orders))
+            data=simplejson.dumps(orders))
 
         response.raise_for_status()
 
