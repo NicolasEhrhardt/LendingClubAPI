@@ -13,15 +13,13 @@ class LendingClubAPI:
 
     def get_portfolios_owned(self) -> list:
         """List portofolios, returns response if failed"""
-        r = requests.get(
+        response = requests.get(
             "%s/accounts/%d/portfolios" % (self.endpoint, investor_id),
             headers=self.header)
+        
+        respnse.raise_for_status()
 
-        if not r.ok:
-            print('Error %d: %s' % (r.status_code, r.reason))
-            return r
-
-        portfolios = r.json()['myPortfolios']
+        portfolios = respnse.json()['myPortfolios']
 
         return portfolios
 
@@ -33,47 +31,40 @@ class LendingClubAPI:
             'portfolioDescription': description,
         }
 
-        r = requests.post(
+        response = requests.post(
             "%s/accounts/%d/portfolios" % (self.endpoint, investor_id),
             headers=self.header,
             data=json.dumps(portfolio_details))
-        
-        if not r.ok:
-            print('Error %d: %s (%s)' % (r.status_code, r.reason, r.url))
-            return r
+
+        response.raise_for_status()
 
         return True
 
     def get_detailed_notes_owned(self) -> dict:
         """Get my detailed notes"""
-        r = requests.get(
+        response = requests.get(
             "%s/accounts/%d/detailednotes" % (self.endoint, investor_id),
             headers=self.header)
+        
+        response.raise_for_status()
 
-        if not r.ok:
-            print('Error %d: %s' % (r.status_code, r.reason))
-            return r.ok
-
-        notes = r.json()['myNotes']
+        notes = response.json()['myNotes']
 
         return notes
 
     # TODO: Add possible filters
     def get_listed_loans(self) -> list:
         """Get loans listed for investing"""
-        r = requests.get(
+        response = requests.get(
             "https://api.lendingclub.com/api/investor/v1/loans/listing",
             headers=self.header)
 
-        if not r.ok:
-            print('Error %d: %s' % (r.status_code, r.reason))
-            return r.ok
+        response.raise_for_status()
 
-        notes = r.json()['loans']
+        notes = response.json()['loans']
 
         return notes
 
-    # TODO: Handle different error messages
     def submit_order(self, loan_ids: list, portfolio_id: int, requested_amount: int=25) -> bool:
         """Place order for list of loanIds, investing"""
         orders = {
@@ -85,14 +76,12 @@ class LendingClubAPI:
             } for loanId in loanIds]
         }
 
-        r = requests.post(
+        response = requests.post(
             "https://api.lendingclub.com/api/investor/v1/accounts/%d/orders" % investor_id,
             headers=self.header,
             data=json.dumps(orders))
         
-        if not r.ok:
-            print('Error %d: %s (%s)' % (r.status_code, r.reason, r.url))
-            return r
+        response.raise_for_status()
 
         return True
 
