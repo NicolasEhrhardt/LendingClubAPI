@@ -2,7 +2,7 @@ import requests
 import json
 
 class LendingClubAPI:
-    def __init__(self, investor_id: int, API_key: str) -> object:
+    def __init__(self, investor_id: int, API_key: str):
         self.investor_id = investor_id
         self.API_key = API_key
         self.header = {
