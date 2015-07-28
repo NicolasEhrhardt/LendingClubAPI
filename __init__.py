@@ -10,7 +10,7 @@ class LendingClubAPI:
             'Accept': 'application/json',
             'Content-type': 'application/json',
             'Authorization': api_key}
-        self.endpoint = "https://api.lendingclub.com/api/invstor/v1"
+        self.endpoint = "https://api.lendingclub.com/api/investor/v1"
 
     def get_portfolios_owned(self) -> list:
         """List portofolios, returns response if failed"""
